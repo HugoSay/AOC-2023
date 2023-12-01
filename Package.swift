@@ -40,6 +40,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-async-algorithms", from: "0.0.0"),
         .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-crypto.git", from: "2.0.0"),
+        .package(url: "https://github.com/pointfreeco/swift-parsing.git", .upToNextMajor(from: "0.13.0")),
     ],
     targets: [
         .target(name: "AoC"),
@@ -47,6 +48,7 @@ let package = Package(
             .product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
             .product(name: "Collections", package: "swift-collections"),
             .product(name: "Crypto", package: "swift-crypto"),
+            .product(name: "Parsing", package: "swift-parsing")
         ]),
 
         .executableTarget(name: "Day01", dependencies: ["AoC", "Common"], resources: [.process("input.txt")]),

@@ -9,7 +9,7 @@
 //
 
 import Foundation
-
+import Parsing
 import AoC
 import Common
 
@@ -17,8 +17,8 @@ import Common
 struct Day01: Puzzle {
     // TODO: Start by defining your input/output types :)
     typealias Input = String
-    typealias OutputPartOne = Never
-    typealias OutputPartTwo = Never
+    typealias OutputPartOne = Int
+    typealias OutputPartTwo = Int
 }
 
 // MARK: - PART 1
@@ -26,27 +26,56 @@ struct Day01: Puzzle {
 extension Day01 {
     static var partOneExpectations: [any Expectation<Input, OutputPartOne>] {
         [
-            // TODO: add expectations for part 1
+            assert(expectation: 12, fromRaw: "1abc2"),
+            assert(expectation: 38, fromRaw: "pqr3stu8vwx"),
+            assert(expectation: 15, fromRaw: "a1b2c3d4e5f"),
+            assert(expectation: 77, fromRaw: "treb7uchet")
         ]
     }
 
     static func solvePartOne(_ input: Input) async throws -> OutputPartOne {
-        // TODO: Solve part 1 :)
-        throw ExecutionError.notSolved
+        input.components(separatedBy: .newlines)
+            .map { line in
+                let line = line.compactMap(\.wholeNumberValue)
+                return line.first! * 10 + line.last!
+            }
+            .reduce(0, +)
     }
+
 }
 
-// MARK: - PART 2
+let writtenDigits = [
+    "one": "one1one",
+    "two": "two2two",
+    "three": "three3three",
+    "four": "four4four",
+    "five": "five5five",
+    "six": "six6six",
+    "seven": "seven7seven",
+    "eight": "eight8eight",
+    "nine": "nine9nine"
+]
+
 
 extension Day01 {
     static var partTwoExpectations: [any Expectation<Input, OutputPartTwo>] {
         [
-            // TODO: add expectations for part 2
+            assert(expectation: 29, from: "two1nine"),
+            assert(expectation: 83, from: "eightwothree"),
+            assert(expectation: 13, from: "abcone2threexyz"),
+            assert(expectation: 24, from: "xtwone3four"),
+            assert(expectation: 42, from: "4nineeightseven2"),
+            assert(expectation: 14, from: "zoneight234"),
+            assert(expectation: 76, from: "7pqrstsixteen")
         ]
     }
 
     static func solvePartTwo(_ input: Input) async throws -> OutputPartTwo {
-        // TODO: Solve part 2 :)
-        throw ExecutionError.notSolved
+        var input = input
+
+        writtenDigits.keys.forEach { key in
+            input = input.replacingOccurrences(of: key, with: writtenDigits[key]!)
+        }
+        return try await solvePartOne(input)
     }
 }
