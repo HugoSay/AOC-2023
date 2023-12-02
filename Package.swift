@@ -41,6 +41,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-crypto.git", from: "2.0.0"),
         .package(url: "https://github.com/pointfreeco/swift-parsing.git", .upToNextMajor(from: "0.13.0")),
+        .package(url: "https://github.com/pointfreeco/swift-case-paths", .upToNextMinor(from: "1.0.0"))
     ],
     targets: [
         .target(name: "AoC"),
