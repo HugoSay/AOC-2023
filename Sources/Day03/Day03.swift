@@ -60,11 +60,11 @@ class Part: Hashable, Equatable {
         return set
     }()
 
+    var isAPart: Bool?
     func isAPart(symbols: Set<Position>) -> Bool {
-        return !symbols.intersection(self.adjacent).isEmpty
+            isAPart = !symbols.isDisjoint(with: adjacent)
+            return self.isAPart!
     }
-
-
 }
 
 extension Game: Parsable {
@@ -134,7 +134,7 @@ extension Day03 {
     static func solvePartOne(_ input: Input) async throws -> OutputPartOne {
         let symbols = Set(input.symbols.map(\.position))
         return input.parts.map { part in
-            part.isAPart(symbols: symbols) ? part.val : 0
+            (part.isAPart ?? part.isAPart(symbols: symbols)) ? part.val : 0
         }
         .reduce(0, +)
     }
@@ -151,10 +151,10 @@ extension Day03 {
 
     static func solvePartTwo(_ input: Input) async throws -> OutputPartTwo {
         let gears = input.symbols.filter(\.isGear)
-        let parts = input.parts.filter { $0.isAPart(symbols: Set(gears.map(\.position)))}
+        let parts = input.parts.filter { $0.isAPart ?? $0.isAPart(symbols: Set(gears.map(\.position)))}
 
         return gears.reduce(0) { partialResult, gear in
-            let adjacents = parts.filter { $0.isAPart(symbols: [gear.position] )}
+            let adjacents = parts.filter { $0.isAPart ?? $0.isAPart(symbols: [gear.position] )}
             if adjacents.count == 2 {
                 return partialResult + adjacents.map(\.val).reduce(1, *)
             } else {
