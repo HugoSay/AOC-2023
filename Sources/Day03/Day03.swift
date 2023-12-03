@@ -27,12 +27,25 @@ struct Symbol {
     var isGear: Bool { char == "*" }
 }
 
-struct Part: Hashable {
+class Part: Hashable, Equatable {
+    static func == (lhs: Part, rhs: Part) -> Bool {
+        lhs.basePosition == rhs.basePosition
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(basePosition)
+    }
+
     var raw: [Character]
     var val: Int { Int(String(raw))! }
     let basePosition: Position
 
-    var adjacent: Set<Position> {
+    init(raw: [Character], basePosition: Position) {
+        self.raw = raw
+        self.basePosition = basePosition
+    }
+
+    lazy var adjacent: Set<Position> = {
         var set = Set([basePosition])
         for i in 0..<raw.count {
             for dx in -1...1 {
@@ -45,12 +58,13 @@ struct Part: Hashable {
             }
         }
         return set
-    }
-
+    }()
 
     func isAPart(symbols: Set<Position>) -> Bool {
         return !symbols.intersection(self.adjacent).isEmpty
     }
+
+
 }
 
 extension Game: Parsable {
