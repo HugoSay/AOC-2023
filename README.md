@@ -8,6 +8,7 @@ My takes on this year's AOC.
 |--------|------------------|----------------------|----------------|
 | **1**  | 0,0099s          | 55017                | 53539          |
 | **2**  | 0,0028s          | 2679                 | 77607          |
-| **3**  | 0,0106s          | 556367               | 89471771       |
+| **3**  | 0,0685s          | 556367               | 89471771       |
+| **4**  | 1,5250s          | 21158                | 6050769        |
 
 \* : Best elapsed time of the complete solution using "Release" mode on a MacBook Pro 14in 2021 with M1 Max with  64GB of memory
