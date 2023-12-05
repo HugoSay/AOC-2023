@@ -9,14 +9,14 @@
 //
 
 import Foundation
-
+import Parsing
 import AoC
 import Common
 
 @main
 struct Day05: Puzzle {
     typealias Input = String
-    typealias OutputPartOne = Never
+    typealias OutputPartOne = Int
     typealias OutputPartTwo = Never
 }
 
