@@ -13,12 +13,17 @@ import Parsing
 import AoC
 import Common
 
-
-
-struct Card {
+public class Card {
     let id: Int
     let numbers: Set<Int>
     let winning: Set<Int>
+    var copies: Int = 1
+
+    init(id: Int, numbers: Set<Int>, winning: Set<Int>) {
+        self.id = id
+        self.numbers = numbers
+        self.winning = winning
+    }
 
     var points: Int {
         let winningNumbers = numbers.intersection(winning)
@@ -32,8 +37,7 @@ struct Card {
 
 let cardParser = Parse(input: Substring.self) {
     "Card"; Whitespace(.horizontal)
-    Int.parser()
-    ":"; Whitespace(.horizontal)
+    Int.parser(); ":"; Whitespace(.horizontal)
     Many {
         Int.parser()
     } separator: {
@@ -55,9 +59,15 @@ let drawParser = Parse(input: Substring.self) {
     }
 }
 
+extension [Card]: Parsable {
+    public static func parse(raw: String) throws -> Array<Card> {
+        try drawParser.parse(raw[...])
+    }
+}
+
 @main
 struct Day04: Puzzle {
-    typealias Input = String
+    typealias Input = [Card]
     typealias OutputPartOne = Int
     typealias OutputPartTwo = Int
 }
@@ -72,9 +82,7 @@ extension Day04 {
     }
 
     static func solvePartOne(_ input: Input) async throws -> OutputPartOne {
-        let draw = try drawParser.parse(input[...])
-
-        return draw.map(\.points).reduce(0, +)
+        return input.map(\.points).reduce(0, +)
     }
 }
 
@@ -88,25 +96,17 @@ extension Day04 {
     }
 
     static func solvePartTwo(_ input: Input) async throws -> OutputPartTwo {
-        var draw = try drawParser.parse(input[...])
-        var cardsByID = Dictionary(grouping: draw, by: \.id)
-
-
-        for key in draw.map(\.id) {
-            cardsByID[key]?.forEach{ card in
-                let numberOfCopies = card.numberOfCopies
-                if numberOfCopies > 0 {
-                    for i in 1 ... numberOfCopies {
-                        guard let copiedCard = cardsByID[key + i]?.first else { break }
-                        cardsByID[key + i]?.append(copiedCard)
-                    }
+        for (index, card) in input.enumerated() {
+            let numberOfCopies = card.numberOfCopies
+            if numberOfCopies > 0 {
+                for i in 1 ... numberOfCopies {
+                    guard input.count >= (i + index) else { break }
+                    input[index + i].copies += card.copies
                 }
             }
         }
 
-        return cardsByID.reduce(0) { partialResult, keyValue in
-            partialResult + keyValue.1.count
-        }
+        return input.map(\.copies).reduce(0, +)
     }
 }
 
