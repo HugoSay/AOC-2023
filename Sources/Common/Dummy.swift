@@ -3,3 +3,4 @@
 // Feel free to add any code you wanna share accross multiple days
 
 
+extension String : Error {}
