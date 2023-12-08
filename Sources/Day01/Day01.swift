@@ -81,4 +81,10 @@ extension Day01 {
 }
 
 
-func feat1() {}
+struct feat1 {
+    func test() {
+        // wow this is some nice implementation you got there
+    }
+}
+
+
