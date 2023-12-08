@@ -163,3 +163,8 @@ extension Day03 {
         }
     }
 }
+
+
+struct feature3 {
+    // ok now i can implement my feature 
+}
