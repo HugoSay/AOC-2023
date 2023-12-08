@@ -79,3 +79,6 @@ extension Day01 {
         return try await solvePartOne(input)
     }
 }
+
+
+func feat1() {}
