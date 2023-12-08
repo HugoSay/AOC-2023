@@ -9,3 +9,6 @@ public typealias Position = SIMD2<Int>
 public extension Position {
     var description: String { "(\(x), \(y))" }
 }
+
+
+let fix1 = "fix 1"
