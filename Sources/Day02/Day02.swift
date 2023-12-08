@@ -150,3 +150,10 @@ extension Day02 {
         input.map(\.power).reduce(0, +)
     }
 }
+
+
+struct feat2 {
+    func test() {
+        // just creating the interface for now
+    }
+}
