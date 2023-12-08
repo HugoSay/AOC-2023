@@ -153,7 +153,14 @@ extension Day02 {
 
 
 struct feat2 {
-    func test() {
-        // just creating the interface for now
+    func mergePullRequest() {
+        var isAhead = false
+        while isAhead == false {
+            isAhead = rebase()
+        }
+    }
+
+    func rebase() -> Bool {
+        .random()
     }
 }
