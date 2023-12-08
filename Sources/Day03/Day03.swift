@@ -166,5 +166,7 @@ extension Day03 {
 
 
 struct feature3 {
-    // ok now i can implement my feature 
+    func someImplem(){
+        // much implementation, such nocode, wow
+    }
 }
