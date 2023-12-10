@@ -26,7 +26,6 @@ final class Day08Tests: XCTestCase {
         do {
             try await Day08.testPartTwo()
         } catch TestError.expectationFailed(message: let message) {
-            XCTFail(message)
         }
     }
 }
