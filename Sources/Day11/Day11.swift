@@ -9,15 +9,74 @@
 //
 
 import Foundation
-
+import Algorithms
 import AoC
 import Common
 
+final class Universe: Parsable {
+    let galaxies: [Position]
+
+    init(galaxies: [Position]) {
+        self.galaxies = galaxies
+    }
+
+    public static func parse(raw: String) throws -> Universe {
+        var galaxies: [Position] = []
+        raw.components(separatedBy: .newlines)
+            .enumerated()
+            .forEach { (y, line) in
+                line.enumerated().forEach { x, char in
+                    if char == "#" {
+                        galaxies.append(.init(x: x, y: y))
+                    }
+                }
+            }
+
+        return Universe(galaxies: galaxies)
+    }
+
+    func solve(expansion: Int) -> Int {
+        var galaxies = galaxies
+        let maxX = galaxies.map(\.x).max()!
+        let maxY = galaxies.map(\.y).max()!
+        
+        let colToAdd = (0..<maxX).filter { col in
+            !galaxies.map(\.x).contains(col)
+        }
+
+        let linesToAdd = (0..<maxY).filter { line in
+            !galaxies.map(\.y).contains(line)
+        }
+
+        colToAdd.reversed().forEach { col in
+            galaxies = galaxies.map({ $0.x <= col ? $0 : $0 &+ Position(x: expansion, y: 0) })
+        }
+
+        linesToAdd.reversed().forEach { line in
+            galaxies = galaxies.map({ $0.y <= line ? $0 : $0 &+ Position(x: 0, y: expansion) })
+        }
+
+        return galaxies.enumerated().reduce(into: 0) { partialResult, position in
+            for i in position.offset..<galaxies.count {
+//                print(position.offset, i, position.element.description, galaxies[i].description, position.element.distance(to: galaxies[i]))
+                partialResult += position.element.distance(to: galaxies[i])
+            }
+        }
+    }
+}
+
+
+extension Position {
+    func distance(to other: Position) -> Int {
+        abs(other.x - x) + abs(other.y - y)
+    }
+}
+
 @main
 struct Day11: Puzzle {
-    typealias Input = String
-    typealias OutputPartOne = Never
-    typealias OutputPartTwo = Never
+    typealias Input = Universe
+    typealias OutputPartOne = Int
+    typealias OutputPartTwo = Int
 }
 
 // MARK: - PART 1
@@ -25,13 +84,12 @@ struct Day11: Puzzle {
 extension Day11 {
     static var partOneExpectations: [any Expectation<Input, OutputPartOne>] {
         [
-            // TODO: add expectations for part 1
+            assert(expectation: 374, fromRaw: raw)
         ]
     }
 
     static func solvePartOne(_ input: Input) async throws -> OutputPartOne {
-        // TODO: Solve part 1 :)
-        throw ExecutionError.notSolved
+        input.solve(expansion: 1)
     }
 }
 
@@ -40,12 +98,25 @@ extension Day11 {
 extension Day11 {
     static var partTwoExpectations: [any Expectation<Input, OutputPartTwo>] {
         [
-            // TODO: add expectations for part 2
+            assert(expectation: 1030, fromRaw: raw)
         ]
     }
 
     static func solvePartTwo(_ input: Input) async throws -> OutputPartTwo {
-        // TODO: Solve part 2 :)
-        throw ExecutionError.notSolved
+        input.solve(expansion: 1_000_000 - 1)
     }
 }
+
+
+let raw = """
+...#......
+.......#..
+#.........
+..........
+......#...
+.#........
+.........#
+..........
+.......#..
+#...#.....
+"""
