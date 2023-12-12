@@ -163,3 +163,10 @@ extension Day03 {
         }
     }
 }
+
+
+struct feature3 {
+    func someImplem(){
+        // much implementation, such nocode, wow
+    }
+}

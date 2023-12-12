@@ -9,3 +9,5 @@ public typealias Position = SIMD2<Int>
 public extension Position {
     var description: String { "(\(x), \(y))" }
 }
+
+var importantCommit = "This commit should be separated from the rest of the merge"
