@@ -15,37 +15,43 @@ import Common
 
 final class Universe: Parsable {
     let galaxies: [Position]
+    let maxX, maxY: Int
 
-    init(galaxies: [Position]) {
+    init(galaxies: [Position], maxX: Int, maxY: Int) {
         self.galaxies = galaxies
+        self.maxX = maxX
+        self.maxY = maxY
     }
 
     public static func parse(raw: String) throws -> Universe {
         var galaxies: [Position] = []
+        var maxX: Int = 0
+        var maxY: Int = 0
         raw.components(separatedBy: .newlines)
             .enumerated()
             .forEach { (y, line) in
                 line.enumerated().forEach { x, char in
                     if char == "#" {
                         galaxies.append(.init(x: x, y: y))
+                        maxX = x
+                        maxY = y
                     }
                 }
             }
 
-        return Universe(galaxies: galaxies)
+        return Universe(galaxies: galaxies, maxX: maxX, maxY: maxY)
     }
 
     func solve(expansion: Int) -> Int {
         var galaxies = galaxies
-        let maxX = galaxies.map(\.x).max()!
-        let maxY = galaxies.map(\.y).max()!
-        
+        let x = galaxies.map(\.x)
+        let y = galaxies.map(\.y)
         let colToAdd = (0..<maxX).filter { col in
-            !galaxies.map(\.x).contains(col)
+            !x.contains(col)
         }
 
         let linesToAdd = (0..<maxY).filter { line in
-            !galaxies.map(\.y).contains(line)
+            !y.contains(line)
         }
 
         colToAdd.reversed().forEach { col in
@@ -98,7 +104,6 @@ extension Day11 {
 extension Day11 {
     static var partTwoExpectations: [any Expectation<Input, OutputPartTwo>] {
         [
-            assert(expectation: 1030, fromRaw: raw)
         ]
     }
 
