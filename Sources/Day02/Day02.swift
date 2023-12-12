@@ -150,3 +150,17 @@ extension Day02 {
         input.map(\.power).reduce(0, +)
     }
 }
+
+
+struct feat2 {
+    func mergePullRequest() {
+        var isAhead = false
+        while isAhead == false {
+            isAhead = rebase()
+        }
+    }
+
+    func rebase() -> Bool {
+        .random()
+    }
+}
